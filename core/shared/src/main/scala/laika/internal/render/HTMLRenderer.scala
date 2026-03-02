@@ -152,29 +152,18 @@ private[laika] class HTMLRenderer(format: String)
       }
     }
 
-    def renderTarget(target: Target): String = fmt.pathTranslator.translate(target) match {
+    def renderTarget(target: Target): String =
+      fmt.pathTranslator.translate(target) match {
       case ext: ExternalTarget => ext.url
       case int: InternalTarget =>
         fmt.internalTargetsAbsoluteBaseUrl match {
 
           case Some(base) =>
-            val abs                  = int.render(internalTargetsAbsolute = true)
-            val (pathPart, fragPart) = abs.split("#", 2) match {
-              case Array(p)    => (p, "")
-              case Array(p, f) => (p, "#" + f)
-              case Array()     => ("", "")
-            }
-            val strippedPath         =
-              if (pathPart.endsWith("/index.html")) pathPart.stripSuffix("index.html")
-              else pathPart
-            val normalizedBase       =
+            val abs = int.render(internalTargetsAbsolute = true)
+            val normalizedBase =
               if (base == "/") ""
               else "/" + base.stripPrefix("/").stripSuffix("/")
-            val combined             =
-              if (normalizedBase.isEmpty) strippedPath + fragPart
-              else normalizedBase + strippedPath + fragPart
-
-            combined
+            if (normalizedBase.isEmpty) abs else normalizedBase + abs
 
           case None =>
             val relPath = int.relativeTo(fmt.path).relativePath

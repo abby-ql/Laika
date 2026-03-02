@@ -1367,17 +1367,17 @@ class TreeRendererSpec extends CatsEffectSuite
         .toMemory
         .render
     ).map { result =>
-      val rendered404Root    =
+      val rendered404Root =
         result.allDocuments.find(_.path == Root / "404.html").get
       val rendered404Project =
         result.allDocuments.find(_.path == Root / "404-project.html").get
-      val renderedDoc        =
+      val renderedDoc =
         result.allDocuments.find(_.path == Root / "doc.html").get
 
       assert(rendered404Root.content.contains("""href="/doc.html""""))
       assert(rendered404Project.content.contains("""href="/project/doc.html""""))
-      assert(rendered404Project.content.contains("""href="/project/""""))
-      assert(rendered404Project.content.contains("""href="/project/guide/#install""""))
+      assert(rendered404Project.content.contains("""href="/project/index.html""""))
+      assert(rendered404Project.content.contains("""href="/project/guide/index.html#install""""))
       assert(renderedDoc.content.contains("""href="other.html""""))
     }
   }
