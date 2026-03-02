@@ -136,23 +136,28 @@ abstract class Renderer private[laika] (val config: OperationConfig, skipRewrite
         .leftMap(InvalidConfig(_))
     }
 
-    (if (skipRewrite) Right(targetElement) else rewrite).map { elementToRender =>
-      val renderContext =
-        new Formatter.Context[Formatter](
-          renderFunction,
-          elementToRender,
-          Nil,
-          styles,
-          doc.path,
-          pathTranslator,
-          if (config.compactRendering) Indentation.none else Indentation.default,
-          config.messageFilters.render
-        )
+    (if (skipRewrite) Right(targetElement) else rewrite).flatMap { elementToRender =>
+      doc.config
+        .getOpt[String]("laika.renderTarget.absolute.baseUrl")
+        .leftMap(InvalidConfig(_))
+        .map { baseUrlOpt =>
+          val renderContext =
+            new Formatter.Context[Formatter](
+              renderFunction,
+              elementToRender,
+              Nil,
+              styles,
+              doc.path,
+              pathTranslator,
+              if (config.compactRendering) Indentation.none else Indentation.default,
+              config.messageFilters.render,
+              baseUrlOpt
+            )
 
-      val formatter = format.formatterFactory(renderContext)
-
-      renderFunction(formatter, elementToRender)
-    }
+          val formatter = format.formatterFactory(renderContext)
+          renderFunction(formatter, elementToRender)
+        }
+      }
   }
 
   /** Creates a new instance that will skip the rewrite phase when rendering elements.
