@@ -164,7 +164,6 @@ private[laika] class HTMLRenderer(format: String)
               case Array(p, f)      => (p, "#" + f)
               case Array()          => ("", "")
             }
-            }
             val strippedPath         =
               if (pathPart.endsWith("/index.html")) pathPart.stripSuffix("index.html")
               else pathPart
