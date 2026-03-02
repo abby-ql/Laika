@@ -61,10 +61,10 @@ abstract class Formatter protected {
     */
   def pathTranslator: PathTranslator = context.pathTranslator
 
-  /** The absolute base URL to use for rendering internal targets as absolute URLs.*/
+  /** The absolute base URL to use for rendering internal targets as absolute URLs. */
   def internalTargetsAbsoluteBaseUrl: Option[String] = context.internalTargetsAbsoluteBaseUrl
-  
-  /** Indicates whether internal targets should be rendered as absolute URLs.*/
+
+  /** Indicates whether internal targets should be rendered as absolute URLs. */
   def internalTargetsAbsolute: Boolean = internalTargetsAbsoluteBaseUrl.nonEmpty
 
   /** The styles the new renderer should apply to the rendered elements.

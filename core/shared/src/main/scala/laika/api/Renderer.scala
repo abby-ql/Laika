@@ -157,7 +157,7 @@ abstract class Renderer private[laika] (val config: OperationConfig, skipRewrite
           val formatter = format.formatterFactory(renderContext)
           renderFunction(formatter, elementToRender)
         }
-      }
+    }
   }
 
   /** Creates a new instance that will skip the rewrite phase when rendering elements.
