@@ -201,10 +201,10 @@ private[helium] object CSSVarGenerator {
 
     val (colorScheme, darkModeStyles) = common.darkMode match {
       case Some(darkModeColors) =>
-        val darkVars = toVars(colorSet(darkModeColors, darkMode = true))
+        val darkVars  = toVars(colorSet(darkModeColors, darkMode = true))
         val lightVars = toVars(colorSet(common.colors, darkMode = false))
 
-        val darkMedia =
+        val darkMedia   =
           renderStyles(
             darkVars,
             includeInverted,
@@ -216,7 +216,7 @@ private[helium] object CSSVarGenerator {
           Seq(("color-scheme", "light dark")),
           darkMedia + manualLight + manualDark
         )
-      case None => (Nil, "")
+      case None                 => (Nil, "")
     }
 
     renderStyles(toVars(vars) ++ colorScheme, includeInverted, darkMode = false) + darkModeStyles
